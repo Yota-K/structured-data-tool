@@ -8,7 +8,9 @@ $active_custom_field_num = 1;
 // 保存処理
 function save_setting()
 {
+  if (isset($_POST['save_setting'])) {
 
+  }
 }
 ?>
 

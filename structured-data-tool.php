@@ -5,13 +5,15 @@
   {
     const TABLE_NAME = "structured_data_table"; 
 
+    // チェックがついているときは数字の1が返却される
+
     public function __construct()
     {
       // プラグインが停止されたときに実行される処理
       // register_deactivation_hook(__FILE__, [$this, 'deactivation']);
 
       // プラグインのアンインストール時に呼び出される処理
-      // register_uninstall_hook(__FILE__, ['StructedDataTool::uninstall']);
+      // register_uninstall_hook(__FILE__, ['StructuredDataTool::uninstall']);
 
       add_action('admin_menu', [$this, 'admin_menu']);
       add_action('admin_menu', [$this, 'sub_menu']);
@@ -25,7 +27,7 @@
         '構造化データツール', /* ページタイトル*/
         '構造化データツール', /* メニュータイトル */
         'manage_options', /* 権限 */
-        'structed-data-tool', /* ページを開いたときのurl */
+        'structured-data-tool', /* ページを開いたときのurl */
         [$this, 'home_page'], /* メニューに紐づく画面を描画するcallback関数 */
         'dashicons-media-text', /* アイコン */
         3, /* 表示位置の優先度 */
@@ -36,7 +38,7 @@
     public function sub_menu()
     {
       add_submenu_page(
-        'structed-data-tool', /* 親メニューのスラッグ */
+        'structured-data-tool', /* 親メニューのスラッグ */
         '設定', /* ページタイトル*/
         '設定', /* メニュータイトル */
         'manage_options', /* 権限 */
@@ -53,16 +55,16 @@
       $current_page_url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
       // プラグインのホーム画面でのみCSS・JSを読み込ませる
-      if (preg_match('/admin\.php\?page=structed-data-tool$/u', $current_page_url)) {
-        wp_enqueue_style('structed-data-tool-css', $plugin_url . 'package/dist/assets/index.css');
-        wp_enqueue_script('structed-data-tool-js', $plugin_url . 'package/dist/assets/index.js', ['jquery', 'wp-element'], wp_rand(), true);
+      if (preg_match('/admin\.php\?page=structured-data-tool$/u', $current_page_url)) {
+        wp_enqueue_style('structured-data-tool-css', $plugin_url . 'package/dist/assets/index.css');
+        wp_enqueue_script('structured-data-tool-js', $plugin_url . 'package/dist/assets/index.js', ['jquery', 'wp-element'], wp_rand(), true);
       }
     }
 
     // ホーム画面
     public function home_page()
     {
-      echo '<div id="structed-data-tool"></div>';
+      echo '<div id="structured-data-tool"></div>';
     }
 
     // 設定画面
