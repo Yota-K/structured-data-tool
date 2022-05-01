@@ -14,6 +14,7 @@
   if (!defined('ABSPATH')) exit;
 
   require_once(__DIR__ . '/structured-data-tool.php');
+  require_once(__DIR__ . '/custom-field.php');
 
   // プラグインが有効化されたときに実行される処理
   // MEMO: StructuredDataTool classに処理を書くとテーブルの作成が行われなかった
