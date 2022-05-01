@@ -107,7 +107,7 @@
 
     // DBのデータを取得する
     // prepareを使ってSQLインジェクションの危険性を回避する
-    public function get_table_data()
+    public static function get_table_data()
     {
       global $wpdb;
 

@@ -1,6 +1,5 @@
 <?php
-$structuredDataTool = new StructuredDataTool();
-$post_types = $structuredDataTool->get_table_data();
+$post_types = StructuredDataTool::get_table_data();
 
 // バックエンドに送信する情報をまとめた連想配列を生成する処理
 function generate_submit_values($values, $post_types) 
@@ -9,7 +8,6 @@ function generate_submit_values($values, $post_types)
   $default_values = [];
 
   foreach ($post_types as $arr) {
-    $post_type = $arr['post_type'];
     $default_values[] = [
       'post_type' => $arr['post_type'],
       'value' => '0',
