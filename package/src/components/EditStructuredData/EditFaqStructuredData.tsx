@@ -5,7 +5,6 @@ import Grid from '@mui/material/Grid';
 import ViewStructuredData from '~/components/EditStructuredData/ViewStructuredData';
 import FaqItem from '~/components/EditStructuredData/FaqItem';
 import { defaultfaqPageStructuredData } from '~/config/defaultStructuredData';
-import { copyToClipBoard } from '~/utils/copyToClipBoard';
 import { FaqPageStructuredData } from '~/types/structuredData';
 
 const EditFaqstructuredData = () => {
@@ -96,13 +95,6 @@ const EditFaqstructuredData = () => {
         </Grid>
         <Grid item xs={8}>
           <ViewStructuredData json={structuredData} />
-          <Button
-            sx={{ my: 2 }}
-            variant="contained"
-            onClick={() => copyToClipBoard(JSON.stringify(structuredData, null, 2))}
-          >
-            コピー
-          </Button>
         </Grid>
       </Grid>
     </>
