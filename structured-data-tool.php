@@ -5,7 +5,9 @@
   {
     const TABLE_NAME = "structured_data_table"; 
 
-    // チェックがついているときは数字の1が返却される
+    // チェックがついていない時は0が、チェックがついているときは1が返却される
+    const NOT_CHECKED_VALUE = '0';
+    const CHECKED_VALUE = '1';
 
     public function __construct()
     {
