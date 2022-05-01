@@ -1,4 +1,11 @@
 <?php
+// wp_postmetaテーブルに格納するmeta_keyを生成する
+function meta_key($post_id)
+{
+  $post_type = get_post_type($post_id);
+  return sprintf("$post_type%s", '_structured_data');
+}
+
 // チェックをつけた投稿タイプのみ構造化データを設定するフィルドを表示する
 function create_custom_fields()
 {
@@ -28,20 +35,21 @@ function insert_custom_fields()
 {
   global $post;
 
-  $sample = get_post_meta($post->ID, get_post_type($post->ID), true); ?>
+  $meta_value = get_post_meta($post->ID, meta_key($post->ID), true);
 
-<form method="post" action="admin.php?page=site_settings">
-  <label for="sample" style="display: block;">構造化データを入力してください</label>
-  <textarea id="sample" name="sample" cols="60" rows="10"><?= $sample ?></textarea>
+  echo <<<EOM
+<form method="POST" action="admin.php?page=site_settings">
+  <label for="structured_data" style="display: block;">構造化データを入力してください</label>
+  <textarea id="structured_data" name="structured_data" cols="60" rows="10">$meta_value</textarea>
 </form>
-
-<?php
+EOM;
 }
 
+// カスタムフィールドの保存処理
 function save_custom_fields($post_id)
 {
-  if (isset($_POST['sample'])) {
-    update_post_meta($post_id, 'sample', $_POST['sample']);
+  if (isset($_POST['structured_data'])) {
+    update_post_meta($post_id, meta_key($post_id), $_POST['structured_data']);
   }
 }
 add_action('save_post', 'save_custom_fields');
