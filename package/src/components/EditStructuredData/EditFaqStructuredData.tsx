@@ -68,7 +68,6 @@ const EditFaqstructuredData = () => {
         <Grid item xs={8}>
           <div>
             <TextField
-              id="outlined-basic"
               label="質問"
               variant="outlined"
               margin="normal"
@@ -78,10 +77,8 @@ const EditFaqstructuredData = () => {
           </div>
           <div>
             <TextField
-              id="outlined-basic"
               label="答え"
               variant="outlined"
-              multiline={true}
               margin="normal"
               value={faqData.answer}
               onChange={handleTextareaChange}
