@@ -17,6 +17,7 @@ const ViewStructuredData: React.FC<Props> = ({ json }) => {
           fontSize: 14,
           backgroundColor: '#323639',
           fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+          borderRadius: '4px',
         }}
       />
     </>
