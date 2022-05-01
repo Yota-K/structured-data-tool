@@ -80,7 +80,7 @@ const EditFaqstructuredData = () => {
       <Button variant="contained" onClick={resetStructuredData}>
         リセット
       </Button>
-      <Button variant="contained" onClick={() => copyToClipBoard}>
+      <Button variant="contained" onClick={() => copyToClipBoard(JSON.stringify(structuredData, null, 2))}>
         コピー
       </Button>
       <h2>構造化データ</h2>
