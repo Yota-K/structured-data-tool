@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -6,20 +6,15 @@ import CopyAllIcon from '@mui/icons-material/CopyAll';
 import Tooltip from '@mui/material/Tooltip';
 import { copyToClipBoard } from '~/utils/copyToClipBoard';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import Alert from '~/components/common/Alert';
 import { FaqPageStructuredData } from '~/types/structuredData';
 
 type Props = {
   json: FaqPageStructuredData;
 };
 
-// TODO: 別コンポーネントに分けていいかも
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
 const ViewStructuredData: React.FC<Props> = ({ json }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const structuredDataCopy = () => {
     copyToClipBoard(JSON.stringify(json, null, 2));
@@ -27,10 +22,7 @@ const ViewStructuredData: React.FC<Props> = ({ json }) => {
   };
 
   const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
+    if (reason === 'clickaway') return;
     setOpen(false);
   };
 
