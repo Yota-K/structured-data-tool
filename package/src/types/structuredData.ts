@@ -1,4 +1,4 @@
-export type DefaultfaqPageStructuredData = {
+export type FaqPageStructuredData = {
   '@context': 'https://schema.org';
   '@type': 'FAQPage';
   mainEntity: {

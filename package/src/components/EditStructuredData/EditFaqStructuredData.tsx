@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import ViewStructuredData from '~/components/EditStructuredData/ViewStructuredData';
+import FaqItem from '~/components/EditStructuredData/FaqItem';
 import { defaultfaqPageStructuredData } from '~/config/defaultStructuredData';
 import { copyToClipBoard } from '~/utils/copyToClipBoard';
+import { FaqPageStructuredData } from '~/types/structuredData';
 
 const EditFaqstructuredData = () => {
-  const [structuredData, setStructuredData] = useState(defaultfaqPageStructuredData);
+  const [structuredData, setStructuredData] = useState<FaqPageStructuredData>(defaultfaqPageStructuredData);
   const [faqData, setFaqData] = useState({
     question: '',
     answer: '',
@@ -46,6 +49,8 @@ const EditFaqstructuredData = () => {
       question: '',
       answer: '',
     });
+
+    structuredData.mainEntity.map((faq) => console.log(faq));
   };
 
   const resetStructuredData = () => setStructuredData(defaultfaqPageStructuredData);
@@ -53,38 +58,50 @@ const EditFaqstructuredData = () => {
   return (
     <>
       <h2>FAQ Page</h2>
-      <div>
-        <TextField
-          id="outlined-basic"
-          label="質問"
-          variant="outlined"
-          margin="normal"
-          value={faqData.question}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <TextField
-          id="outlined-basic"
-          label="答え"
-          variant="outlined"
-          multiline={true}
-          margin="normal"
-          value={faqData.answer}
-          onChange={handleTextareaChange}
-        />
-      </div>
-      <Button variant="contained" onClick={addQuestionAndAnswer}>
-        質問を増やす
-      </Button>
-      <Button variant="contained" onClick={resetStructuredData}>
-        リセット
-      </Button>
-      <Button variant="contained" onClick={() => copyToClipBoard(JSON.stringify(structuredData, null, 2))}>
-        コピー
-      </Button>
-      <h2>構造化データ</h2>
-      <ViewStructuredData json={structuredData} />
+      <Grid container spacing={2} columns={16}>
+        <Grid item xs={8}>
+          <div>
+            <TextField
+              id="outlined-basic"
+              label="質問"
+              variant="outlined"
+              margin="normal"
+              value={faqData.question}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <TextField
+              id="outlined-basic"
+              label="答え"
+              variant="outlined"
+              multiline={true}
+              margin="normal"
+              value={faqData.answer}
+              onChange={handleTextareaChange}
+            />
+          </div>
+          <Button variant="contained" onClick={addQuestionAndAnswer}>
+            質問を増やす
+          </Button>
+          <Button sx={{ m: 2 }} variant="contained" onClick={resetStructuredData}>
+            リセット
+          </Button>
+          {structuredData.mainEntity.map((faq) => (
+            <FaqItem key={faq.name} faq={faq} />
+          ))}
+        </Grid>
+        <Grid item xs={8}>
+          <ViewStructuredData json={structuredData} />
+          <Button
+            sx={{ my: 2 }}
+            variant="contained"
+            onClick={() => copyToClipBoard(JSON.stringify(structuredData, null, 2))}
+          >
+            コピー
+          </Button>
+        </Grid>
+      </Grid>
     </>
   );
 };

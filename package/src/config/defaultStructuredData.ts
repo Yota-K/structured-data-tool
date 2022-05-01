@@ -1,6 +1,6 @@
-import { DefaultfaqPageStructuredData } from '~/types/structuredData';
+import { FaqPageStructuredData } from '~/types/structuredData';
 
-const defaultfaqPageStructuredData: DefaultfaqPageStructuredData = {
+const defaultfaqPageStructuredData: FaqPageStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: [],
