@@ -49,8 +49,14 @@ const EditFaqstructuredData = () => {
       question: '',
       answer: '',
     });
+  };
 
-    structuredData.mainEntity.map((faq) => console.log(faq));
+  const removeQuestionAndAnswer = (index: number) => {
+    const newStructuredData = [...structuredData.mainEntity].filter((_faq, faqIndex) => faqIndex !== index);
+    setStructuredData({
+      ...structuredData,
+      mainEntity: newStructuredData,
+    });
   };
 
   const resetStructuredData = () => setStructuredData(defaultfaqPageStructuredData);
@@ -87,8 +93,8 @@ const EditFaqstructuredData = () => {
           <Button sx={{ m: 2 }} variant="contained" onClick={resetStructuredData}>
             リセット
           </Button>
-          {structuredData.mainEntity.map((faq) => (
-            <FaqItem key={faq.name} faq={faq} />
+          {structuredData.mainEntity.map((faq, i) => (
+            <FaqItem key={i} faq={faq} index={i} removeQuestionAndAnswer={removeQuestionAndAnswer} />
           ))}
         </Grid>
         <Grid item xs={8}>
