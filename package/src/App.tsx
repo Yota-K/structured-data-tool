@@ -1,10 +1,11 @@
+import Container from '@mui/material/Container';
 import EditArea from '~/components/EditStructuredData/EditArea';
 
 function App() {
   return (
-    <div className="App">
+    <Container>
       <EditArea />
-    </div>
+    </Container>
   );
 }
 
