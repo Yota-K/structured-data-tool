@@ -53,3 +53,16 @@ function save_custom_fields($post_id)
   }
 }
 add_action('save_post', 'save_custom_fields');
+
+// 構造化データをフッターに出力する
+function insert_structured_data()
+{
+  global $post;
+
+  $meta_value = get_post_meta($post->ID, meta_key($post->ID), true);
+
+  if ($meta_value) {
+    printf('<script type="application/ld+json">%s</script>', $meta_value);
+  }
+}
+add_action('wp_footer', 'insert_structured_data');
