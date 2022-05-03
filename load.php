@@ -58,4 +58,4 @@
     $sql = "DROP TABLE $table_name";
     $wpdb->query($sql);
   }
-  register_uninstall_hook(__FILE__, ['structured_data_tool_uninstall']);
+  register_uninstall_hook(__FILE__, 'structured_data_tool_uninstall');
