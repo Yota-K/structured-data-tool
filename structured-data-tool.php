@@ -11,7 +11,7 @@
 
     public function __construct()
     {
-      if (is_admin() && is_user_logged_in()) {
+      if (is_admin()) {
         add_action('admin_menu', [$this, 'admin_menu']);
         add_action('admin_menu', [$this, 'sub_menu']);
         add_action('admin_enqueue_scripts', [$this, 'include_home_resources']);
