@@ -47,7 +47,7 @@
   }
   register_activation_hook( __FILE__, 'structured_data_tool_install');
 
-  // プラグインが削除されたときに実行される処理
+  // プラグインが削除されるときに実行される処理
   function structured_data_tool_uninstall() 
   {
     global $wpdb;
@@ -55,7 +55,7 @@
     delete_option('my_db_version');
     $table_name = $wpdb->prefix . StructuredDataTool::TABLE_NAME;
 
-    $sql = "DROP TABLE $table_name";
+    $sql = "DROP TABLE IF EXISTS $table_name";
     $wpdb->query($sql);
   }
   register_uninstall_hook(__FILE__, 'structured_data_tool_uninstall');
