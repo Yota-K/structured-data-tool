@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import ViewStructuredData from '~/components/EditStructuredData/ViewStructuredData';
+import ViewStructuredData from '~/components/common/ViewStructuredData';
 import FaqItem from '~/components/EditStructuredData/FaqItem';
 import { defaultfaqPageStructuredData } from '~/config/defaultStructuredData';
 import { FaqPageStructuredData } from '~/types/structuredData';
@@ -13,6 +13,16 @@ const EditFaqstructuredData = () => {
     question: '',
     answer: '',
   });
+  const [isDisabled, setIsDisabed] = useState(true);
+
+  useEffect(() => {
+    if ([faqData.question, faqData.answer].every((value) => value !== '')) {
+      setIsDisabed(false);
+      return;
+    }
+
+    setIsDisabed(true);
+  }, [faqData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFaqData({
@@ -83,7 +93,7 @@ const EditFaqstructuredData = () => {
               onChange={handleTextareaChange}
             />
           </div>
-          <Button variant="contained" onClick={addQuestionAndAnswer}>
+          <Button variant="contained" onClick={addQuestionAndAnswer} disabled={isDisabled}>
             質問を増やす
           </Button>
           <Button sx={{ m: 2 }} variant="contained" onClick={resetStructuredData}>
