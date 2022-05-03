@@ -2,11 +2,7 @@ import React from 'react';
 import EditFaqStructuredData from '~/components/EditStructuredData/EditFaqStructuredData';
 
 const EditArea: React.FC = () => {
-  return (
-    <div>
-      <EditFaqStructuredData />
-    </div>
-  );
+  return <EditFaqStructuredData />;
 };
 
 export default EditArea;

@@ -27,14 +27,14 @@ const EditFaqstructuredData = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFaqData({
       ...faqData,
-      question: e.target.value,
+      question: e.target.value.trim(),
     });
   };
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFaqData({
       ...faqData,
-      answer: e.target.value,
+      answer: e.target.value.trim(),
     });
   };
 
@@ -80,8 +80,9 @@ const EditFaqstructuredData = () => {
               label="質問"
               variant="outlined"
               margin="normal"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
+              fullWidth
               value={faqData.question}
-              onChange={handleInputChange}
             />
           </div>
           <div>
@@ -89,8 +90,19 @@ const EditFaqstructuredData = () => {
               label="答え"
               variant="outlined"
               margin="normal"
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleTextareaChange(e)}
+              fullWidth
+              multiline
+              minRows={5}
               value={faqData.answer}
-              onChange={handleTextareaChange}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  background: '#fff',
+                },
+                '& .MuiInputBase-inputMultiline': {
+                  boxShadow: 'none',
+                },
+              }}
             />
           </div>
           <Button variant="contained" onClick={addQuestionAndAnswer} disabled={isDisabled}>

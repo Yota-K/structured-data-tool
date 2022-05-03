@@ -13,22 +13,28 @@ type Props = {
   removeQuestionAndAnswer: (index: number) => void;
 };
 
+// TODO: もうちょっとMUIを生かした作りにしたい
 const FaqItem: React.FC<Props> = ({ faq, index, removeQuestionAndAnswer }) => {
+  // Answerは改行込みのデータを表示させる
+  // 参考: https://qiita.com/ossan-engineer/items/bdb45368ab453af38342
+  const style: React.CSSProperties = { whiteSpace: 'pre-line' };
+
   return (
     <Card sx={{ minWidth: 275, my: 2 }}>
-      <CardContent>
-        <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-          <IconButton onClick={() => removeQuestionAndAnswer(index)}>
-            <CloseIcon color="error" />
-          </IconButton>
-        </Box>
+      <CardContent sx={{ position: 'relative' }}>
+        <IconButton
+          onClick={() => removeQuestionAndAnswer(index)}
+          sx={{ position: 'absolute', top: '6px', right: '6px' }}
+        >
+          <CloseIcon color="error" />
+        </IconButton>
         <Typography color="text.secondary" gutterBottom>
-          <span style={{ fontWeight: 'bold' }}>Question: </span>
-          {faq.name}
+          <h3 style={{ fontWeight: 'bold', margin: 0 }}>Question</h3>
+          <p style={{ margin: 0 }}>{faq.name}</p>
         </Typography>
         <Typography color="text.secondary" gutterBottom>
-          <span style={{ fontWeight: 'bold' }}>Answer: </span>
-          {faq.acceptedAnswer.text}
+          <h3 style={{ fontWeight: 'bold', margin: 0 }}>Answer</h3>
+          <p style={{ ...style, ...{ margin: 0 } }}>{faq.acceptedAnswer.text}</p>
         </Typography>
       </CardContent>
     </Card>
