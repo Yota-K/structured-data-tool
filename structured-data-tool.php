@@ -11,12 +11,6 @@
 
     public function __construct()
     {
-      // プラグインが停止されたときに実行される処理
-      // register_deactivation_hook(__FILE__, [$this, 'deactivation']);
-
-      // プラグインのアンインストール時に呼び出される処理
-      // register_uninstall_hook(__FILE__, ['StructuredDataTool::uninstall']);
-
       add_action('admin_menu', [$this, 'admin_menu']);
       add_action('admin_menu', [$this, 'sub_menu']);
       add_action('admin_enqueue_scripts', [$this, 'add_my_files']);
@@ -105,6 +99,32 @@
       return $post_infos;
     }
 
+    // 初期データをDBにインサート
+    public static function insert_init_data($wpdb, $table_name)
+    {
+      $structuredDataTool = new StructuredDataTool();
+      $post_types = $structuredDataTool->get_all_post_types();
+
+      // テーブルが存在する時はデータをインサートする
+      if (!is_null($wpdb->get_var("SHOW TABLES LIKE '" .$table_name. "'"))) {
+        foreach ($post_types as $arr) {
+          $wpdb->insert(
+            $table_name,
+            [
+              'post_name' => $arr['label'], 
+              'post_type' => $arr['name'],
+              'value' => 0,
+            ],
+            [
+              '%s', 
+              '%s',
+              '%d' 
+            ] 
+          );
+        }
+      }
+    }
+
     // DBのデータを取得する
     // prepareを使ってSQLインジェクションの危険性を回避する
     public static function get_table_data()
@@ -119,8 +139,6 @@
     }
   }
 
-  // instantiate
   $structuredDataTool = new StructuredDataTool();
 
   endif;
-?>

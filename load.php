@@ -42,34 +42,20 @@
       add_option('my_db_version', $db_version);
 
       // 初期データの投入
-      insert_data($wpdb, $table_name);
+      StructuredDataTool::insert_init_data($wpdb, $table_name);
     }
   }
   register_activation_hook( __FILE__, 'structured_data_tool_install');
 
-
-  // プラグインの初期データをDBにインサート
-  function insert_data($wpdb, $table_name)
+  // プラグインが削除されたときに実行される処理
+  function structured_data_tool_uninstall() 
   {
-    $structuredDataTool = new StructuredDataTool();
-    $post_types = $structuredDataTool->get_all_post_types();
+    global $wpdb;
 
-    // テーブルが存在する時はデータをインサートする
-    if (!is_null($wpdb->get_var("SHOW TABLES LIKE '" .$table_name. "'"))) {
-      foreach ($post_types as $arr) {
-        $wpdb->insert(
-          $table_name,
-          [
-            'post_name' => $arr['label'], 
-            'post_type' => $arr['name'],
-            'value' => 0,
-          ],
-          [
-            '%s', 
-            '%s',
-            '%d' 
-          ] 
-        );
-      }
-    }
+    delete_option('my_db_version');
+    $table_name = $wpdb->prefix . StructuredDataTool::TABLE_NAME;
+
+    $sql = "DROP TABLE $table_name";
+    $wpdb->query($sql);
   }
+  register_uninstall_hook(__FILE__, ['structured_data_tool_uninstall']);
