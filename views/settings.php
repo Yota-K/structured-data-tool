@@ -2,7 +2,7 @@
 $post_types = StructuredDataTool::get_table_data();
 
 // バックエンドに送信する情報をまとめた連想配列を生成する処理
-function generate_submit_values($values, $post_types) 
+function generate_submit_values($values, $post_types)
 {
   // バックエンドに送信するデフォルト値を設定した連想配列を生成
   $default_values = [];
@@ -10,7 +10,7 @@ function generate_submit_values($values, $post_types)
   foreach ($post_types as $arr) {
     $default_values[] = [
       'post_type' => $arr['post_type'],
-      'value' => '0',
+      'value' => StructuredDataTool::NOT_CHECKED_VALUE,
     ];
   }
 
@@ -59,13 +59,18 @@ function save_setting($post_types)
   $submit_values = generate_submit_values($values, $post_types);
 
   global $wpdb;
+
   $wpdb->show_errors();
 
   $table_name = $wpdb->prefix . StructuredDataTool::TABLE_NAME;
   $query = "UPDATE $table_name SET value = %s WHERE post_type = %s";
 
   foreach ($submit_values as $arr) {
-    $update_value = $arr['value'] === '0' ? '0' : '1';
+    $update_value = $arr['value'] === StructuredDataTool::NOT_CHECKED_VALUE
+      ? StructuredDataTool::NOT_CHECKED_VALUE
+      : StructuredDataTool::CHECKED_VALUE;
+
+    // prepareメソッドを使用することで、SQLエスケープを実施
     $wpdb->query($wpdb->prepare($query, $update_value, $arr['post_type']));
   }
 
@@ -76,7 +81,6 @@ function save_setting($post_types)
   }
 }
 
-// 設定の保存
 save_setting($post_types);
 ?>
 
@@ -95,7 +99,7 @@ save_setting($post_types);
         id="<?= $arr['post_type']; ?>"
         name="values[]"
         value="<?= $arr['post_type'] . ',' . $arr['value']; ?>"
-        <?= $arr['value'] === StructuredDataTool::CHECKED_VALUE ? 'checked' : ''; ?> 
+        <?= $arr['value'] === StructuredDataTool::CHECKED_VALUE ? 'checked' : ''; ?>
       >
       <label for="<?= $arr['post_name']; ?>">
         <?= $arr['post_name']; ?>

@@ -83,7 +83,7 @@ class StructuredDataTool
     $post_infos = [];
 
     foreach ($post_types as $post_type) {
-      $object = get_post_type_object( $post_type );
+      $object = get_post_type_object($post_type);
 
       // メディアは除外する
       if ($object->name === 'attachment') continue;
