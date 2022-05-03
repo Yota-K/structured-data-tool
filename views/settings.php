@@ -76,10 +76,12 @@ function save_setting($post_types)
   }
 }
 
+// 設定の保存
 save_setting($post_types);
 ?>
 
 <h2>設定</h2>
+<h3>投稿タイプの選択</h3>
 <p>構造化データを設定したい投稿タイプを選択して下さい。</p>
 <form method="POST">
   <?php
