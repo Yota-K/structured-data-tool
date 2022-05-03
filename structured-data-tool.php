@@ -11,9 +11,11 @@
 
     public function __construct()
     {
-      add_action('admin_menu', [$this, 'admin_menu']);
-      add_action('admin_menu', [$this, 'sub_menu']);
-      add_action('admin_enqueue_scripts', [$this, 'add_my_files']);
+      if (is_admin() && is_user_logged_in()) {
+        add_action('admin_menu', [$this, 'admin_menu']);
+        add_action('admin_menu', [$this, 'sub_menu']);
+        add_action('admin_enqueue_scripts', [$this, 'include_home_resources']);
+      }
     }
     
     // メインメニュー
@@ -44,15 +46,15 @@
       );
     }
 
-    // プラグインで使用するCSS・JSを読み込ませる
-    public function add_my_files()
+    // ホーム画面で使用するCSS・JSを読み込ませる
+    public function include_home_resources()
     {
       $plugin_url = plugin_dir_url(__FILE__);
       $current_page_url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
       // プラグインのホーム画面でのみCSS・JSを読み込ませる
       if (preg_match('/admin\.php\?page=structured-data-tool$/u', $current_page_url)) {
-        wp_enqueue_style('structured-data-tool-css', $plugin_url . 'package/dist/assets/index.css');
+        wp_enqueue_style('structured-data-tool-css', $plugin_url . 'package/dist/assets/index.css', [], wp_rand());
         wp_enqueue_script('structured-data-tool-js', $plugin_url . 'package/dist/assets/index.js', ['jquery', 'wp-element'], wp_rand(), true);
       }
     }
@@ -73,14 +75,10 @@
     // 全ての投稿タイプを取得する
     public function get_all_post_types()
     {
-      // true のとき、公開された（public な）投稿タイプのみが返される
-      $args = [
+      // 公開された済みの投稿タイプのみ取得する
+      $post_types = get_post_types([
         'public' => true
-      ];
-
-      $output = 'names'; // （文字列） （オプション） 戻り値の型を指定します。'names'（名前）または 'objects'（オブジェクト）。
-      $operator = 'and'; //（文字列） （オプション） $args で複数の条件を指定する場合の演算子（'and' または 'or'）。
-      $post_types = get_post_types($args, $output, $operator);
+      ]);
 
       $post_infos = [];
 
@@ -126,7 +124,6 @@
     }
 
     // DBのデータを取得する
-    // prepareを使ってSQLインジェクションの危険性を回避する
     public static function get_table_data()
     {
       global $wpdb;
