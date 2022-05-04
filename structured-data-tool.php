@@ -46,6 +46,21 @@ class StructuredDataTool
     );
   }
 
+
+  // 関数実行時に呼び出し元のクラスのインスタンスを生成する
+  // これを行うことで、静的メソッドの中でもクラス内のメソッドにアクセスできるようになる
+  public static function get_instance() 
+  {
+    // メンバ変数を使用すると継承された際にエラーになるため、メソッド内でstatic変数を使用する必要がある
+    static $instance;
+
+    if (!$instance) {
+      $instance = new static();
+    }
+
+    return $instance;
+  }
+
   // ホーム画面で使用するCSS・JSを読み込ませる
   public function include_home_resources()
   {
@@ -73,7 +88,7 @@ class StructuredDataTool
   }
 
   // 全ての投稿タイプを取得する
-  private function get_all_post_types()
+  public function get_all_post_types()
   {
     // 公開された済みの投稿タイプのみ取得する
     $post_types = get_post_types([
@@ -106,6 +121,7 @@ class StructuredDataTool
       // 関数実行時に呼び出し元のクラスのインスタンスを生成する
       // これを行うことで、静的メソッドの中でもクラス内のメソッドにアクセスできるようになる
       $instance = new static();
+      $instance::get_table_data();
 
       // テーブルが存在する時はデータをインサートする
       if (!is_null($wpdb->get_var("SHOW TABLES LIKE '" . $table_name . "'"))) {
@@ -138,6 +154,33 @@ class StructuredDataTool
     $results = $wpdb->get_results($query, 'ARRAY_A');
 
     return $results;
+  }
+
+  // プラグインインストール後に追加した投稿タイプの情報をテーブルに登録する
+  public static function add_new_post_type_info($wpdb)
+  {
+    $table_name = $wpdb->prefix . StructuredDataTool::TABLE_NAME;
+    $query = "SELECT * FROM $table_name WHERE post_type = %s";
+
+    foreach (static::get_instance()->get_all_post_types() as $arr) {
+      $find_data = $wpdb->query($wpdb->prepare($query, $arr['name']));
+
+      if (!$find_data) {
+        $wpdb->insert(
+          $table_name,
+          [
+            'post_name' => $arr['label'], 
+            'post_type' => $arr['name'],
+            'value' => 0,
+          ],
+          [
+            '%s', 
+            '%s',
+            '%d' 
+          ] 
+        );
+      }
+    }
   }
 }
 

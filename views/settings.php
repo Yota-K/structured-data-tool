@@ -51,12 +51,8 @@ function generate_submit_values($values, $post_types)
 // 保存処理
 function save_setting($post_types)
 {
-  $values = $_POST['values'];
-
-  if ($_SERVER["REQUEST_METHOD"] !== 'POST' && !isset($_POST['save_setting']) && !isset($values)) return;
-
   // バックエンドに送信する情報をまとめた連想配列
-  $submit_values = generate_submit_values($values, $post_types);
+  $submit_values = generate_submit_values($_POST['values'], $post_types);
 
   global $wpdb;
 
@@ -81,7 +77,26 @@ function save_setting($post_types)
   }
 }
 
-save_setting($post_types);
+// 投稿タイプの新規追加
+function add_new_post_type() 
+{
+  global $wpdb;
+
+  $wpdb->show_errors();
+  StructuredDataTool::add_new_post_type_info($wpdb);
+
+  if (empty($wpdb->last_error)) {
+    echo '<script>location.reload();</script>';
+  } else {
+    echo '<p style="color: red; font-weight: bold;">投稿タイプの追加に失敗しました！</p>';
+  }
+}
+
+if (isset($_POST['save_setting']) && isset($_POST['values'])) {
+  save_setting($post_types);
+} else if (isset($_POST['add_new_post_type'])) {
+  add_new_post_type();
+}
 ?>
 
 <h2>設定</h2>
@@ -119,6 +134,14 @@ save_setting($post_types);
       value="登録"
     />
   </div>
+  <h3>投稿タイプの追加</h3>
+  <p>プラグインインストール後に投稿タイプを追加した際は、こちらのボタンをクリックして投稿タイプの登録を行ってください。</p>
+  <input
+    class="button button-primary button-large"
+    type="submit"
+    name="add_new_post_type"
+    value="投稿タイプを追加する"
+  />
 </form>
 
 <script>
