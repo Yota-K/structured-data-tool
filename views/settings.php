@@ -51,29 +51,16 @@ function generate_submit_values($values, $post_types)
 // 保存処理
 function save_setting($post_types)
 {
-  // バックエンドに送信する情報をまとめた連想配列
-  $submit_values = generate_submit_values($_POST['values'], $post_types);
-
   global $wpdb;
 
   $wpdb->show_errors();
 
-  $table_name = $wpdb->prefix . StructuredDataTool::TABLE_NAME;
-  $query = "UPDATE $table_name SET value = %s WHERE post_type = %s";
+  // バックエンドに送信する情報をまとめた連想配列
+  $submit_values = generate_submit_values($_POST['values'], $post_types);
+  StructuredDataTool::save_settings($wpdb, $submit_values);
 
-  foreach ($submit_values as $arr) {
-    $update_value = $arr['value'] === StructuredDataTool::NOT_CHECKED_VALUE
-      ? StructuredDataTool::NOT_CHECKED_VALUE
-      : StructuredDataTool::CHECKED_VALUE;
-
-    // prepareメソッドを使用することで、SQLエスケープを実施
-    $wpdb->query($wpdb->prepare($query, $update_value, $arr['post_type']));
-  }
-
-  if (empty($wpdb->last_error)) {
-    echo '<script>location.reload();</script>';
-  } else {
-    echo '<p style="color: red; font-weight: bold;">データの更新に失敗しました！</p>';
+  if (!empty($wpdb->last_error)) {
+    echo '<p style="color: red; font-weight: bold;">保存処理に失敗しました！</p>';
   }
 }
 
@@ -85,9 +72,7 @@ function add_new_post_type()
   $wpdb->show_errors();
   StructuredDataTool::add_new_post_type_info($wpdb);
 
-  if (empty($wpdb->last_error)) {
-    echo '<script>location.reload();</script>';
-  } else {
+  if (!empty($wpdb->last_error)) {
     echo '<p style="color: red; font-weight: bold;">投稿タイプの追加に失敗しました！</p>';
   }
 }
@@ -100,9 +85,7 @@ function remove_post_type()
   $wpdb->show_errors();
   StructuredDataTool::remove_post_type_info($wpdb);
 
-  if (empty($wpdb->last_error)) {
-    echo '<script>location.reload();</script>';
-  } else {
+  if (!empty($wpdb->last_error)) {
     echo '<p style="color: red; font-weight: bold;">投稿タイプの削除に失敗しました！</p>';
   }
 }
@@ -148,7 +131,7 @@ if (isset($_POST['save_setting']) && isset($_POST['values'])) {
       class="button button-primary button-large"
       type="submit"
       name="save_setting"
-      value="登録"
+      value="設定を保存する"
     />
   </div>
   <h3>投稿タイプの追加</h3>

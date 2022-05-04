@@ -145,6 +145,25 @@ class StructuredDataTool
     return $results;
   }
 
+  // 保存処理
+  public static function save_settings($wpdb, $submit_values)
+  {
+    $table_name = $wpdb->prefix . StructuredDataTool::TABLE_NAME;
+    $query = "UPDATE $table_name SET value = %s WHERE post_type = %s";
+
+    foreach ($submit_values as $arr) {
+      $update_value = $arr['value'] === StructuredDataTool::NOT_CHECKED_VALUE
+        ? StructuredDataTool::NOT_CHECKED_VALUE
+        : StructuredDataTool::CHECKED_VALUE;
+
+      // prepareメソッドを使用することで、SQLエスケープを実施
+      $wpdb->query($wpdb->prepare($query, $update_value, $arr['post_type']));
+    }
+
+    // バックエンド側の更新結果をすぐにチェックボックスに反映させるのがちょっと時間かかりそうなので一旦jsでリロードする方針で実装
+    echo '<script>location.reload();</script>';
+  }
+
   // プラグインインストール後に追加した投稿タイプの情報をテーブルに登録する
   public static function add_new_post_type_info($wpdb)
   {
@@ -170,6 +189,8 @@ class StructuredDataTool
         );
       }
     }
+
+    echo '<script>location.reload();</script>';
   }
 
   // プラグインインストール後に削除した投稿タイプの情報をテーブルから削除する
@@ -186,6 +207,8 @@ class StructuredDataTool
         );
       }
     }
+
+    echo '<script>location.reload();</script>';
   }
 }
 
