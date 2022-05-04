@@ -92,10 +92,27 @@ function add_new_post_type()
   }
 }
 
+// 投稿タイプの削除
+function remove_post_type() 
+{
+  global $wpdb;
+
+  $wpdb->show_errors();
+  StructuredDataTool::remove_post_type_info($wpdb);
+
+  if (empty($wpdb->last_error)) {
+    echo '<script>location.reload();</script>';
+  } else {
+    echo '<p style="color: red; font-weight: bold;">投稿タイプの削除に失敗しました！</p>';
+  }
+}
+
 if (isset($_POST['save_setting']) && isset($_POST['values'])) {
   save_setting($post_types);
 } else if (isset($_POST['add_new_post_type'])) {
   add_new_post_type();
+} else if (isset($_POST['remove_post_type'])) {
+  remove_post_type();
 }
 ?>
 
@@ -141,6 +158,14 @@ if (isset($_POST['save_setting']) && isset($_POST['values'])) {
     type="submit"
     name="add_new_post_type"
     value="投稿タイプを追加する"
+  />
+  <h3>投稿タイプの削除</h3>
+  <p>プラグインインストール後に投稿タイプを削除した際は、こちらのボタンをクリックして投稿タイプの削除を行ってください。</p>
+  <input
+    class="button button-primary button-large"
+    type="submit"
+    name="remove_post_type"
+    value="投稿タイプを削除する"
   />
 </form>
 

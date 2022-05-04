@@ -3,7 +3,7 @@ if (!class_exists('StructuredDataTool')):
 
 class StructuredDataTool
 {
-  const TABLE_NAME = 'structured_data_table'; 
+  const TABLE_NAME = 'structured_data_table';
 
   // チェックがついていない時は0が、チェックがついているときは1が返却される
   const NOT_CHECKED_VALUE = '0';
@@ -17,7 +17,7 @@ class StructuredDataTool
       add_action('admin_enqueue_scripts', [$this, 'include_home_resources']);
     }
   }
-  
+
   // メインメニュー
   public function admin_menu()
   {
@@ -46,10 +46,9 @@ class StructuredDataTool
     );
   }
 
-
   // 関数実行時に呼び出し元のクラスのインスタンスを生成する
   // これを行うことで、静的メソッドの中でもクラス内のメソッドにアクセスできるようになる
-  public static function get_instance() 
+  public static function get_instance()
   {
     // メンバ変数を使用すると継承された際にエラーになるため、メソッド内でstatic変数を使用する必要がある
     static $instance;
@@ -121,15 +120,15 @@ class StructuredDataTool
         $wpdb->insert(
           $table_name,
           [
-            'post_name' => $arr['label'], 
+            'post_name' => $arr['label'],
             'post_type' => $arr['name'],
             'value' => 0,
           ],
           [
-            '%s', 
             '%s',
-            '%d' 
-          ] 
+            '%s',
+            '%d'
+          ]
         );
       }
     }
@@ -141,8 +140,7 @@ class StructuredDataTool
     global $wpdb;
 
     $table_name = $wpdb->prefix . StructuredDataTool::TABLE_NAME;
-    $query = "SELECT * FROM $table_name";
-    $results = $wpdb->get_results($query, 'ARRAY_A');
+    $results = $wpdb->get_results("SELECT * FROM $table_name", 'ARRAY_A');
 
     return $results;
   }
@@ -160,15 +158,31 @@ class StructuredDataTool
         $wpdb->insert(
           $table_name,
           [
-            'post_name' => $arr['label'], 
+            'post_name' => $arr['label'],
             'post_type' => $arr['name'],
             'value' => 0,
           ],
           [
-            '%s', 
             '%s',
-            '%d' 
-          ] 
+            '%s',
+            '%d'
+          ]
+        );
+      }
+    }
+  }
+
+  // プラグインインストール後に削除した投稿タイプの情報をテーブルから削除する
+  public static function remove_post_type_info($wpdb)
+  {
+    $table_name = $wpdb->prefix . StructuredDataTool::TABLE_NAME;
+
+    foreach (static::get_instance()->get_table_data() as $arr) {
+      if (!post_type_exists($arr['post_type'])) {
+        $wpdb->delete(
+          $table_name,
+          ['post_type' => $arr['post_type']],
+          ['%s']
         );
       }
     }
