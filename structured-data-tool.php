@@ -115,31 +115,22 @@ class StructuredDataTool
   // 初期データをプラグインインストール時に作成したテーブルに登録
   public static function insert_init_data($wpdb, $table_name)
   {
-    static $instance;
-
-    if (!$instance) {
-      // 関数実行時に呼び出し元のクラスのインスタンスを生成する
-      // これを行うことで、静的メソッドの中でもクラス内のメソッドにアクセスできるようになる
-      $instance = new static();
-      $instance::get_table_data();
-
-      // テーブルが存在する時はデータをインサートする
-      if (!is_null($wpdb->get_var("SHOW TABLES LIKE '" . $table_name . "'"))) {
-        foreach ($instance->get_all_post_types() as $arr) {
-          $wpdb->insert(
-            $table_name,
-            [
-              'post_name' => $arr['label'], 
-              'post_type' => $arr['name'],
-              'value' => 0,
-            ],
-            [
-              '%s', 
-              '%s',
-              '%d' 
-            ] 
-          );
-        }
+    // テーブルが存在する時はデータをインサートする
+    if (!is_null($wpdb->get_var("SHOW TABLES LIKE '" . $table_name . "'"))) {
+      foreach (static::get_instance()->get_all_post_types() as $arr) {
+        $wpdb->insert(
+          $table_name,
+          [
+            'post_name' => $arr['label'], 
+            'post_type' => $arr['name'],
+            'value' => 0,
+          ],
+          [
+            '%s', 
+            '%s',
+            '%d' 
+          ] 
+        );
       }
     }
   }
