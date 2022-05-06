@@ -212,6 +212,6 @@ class StructuredDataTool
   }
 }
 
-$structuredDataTool = new StructuredDataTool();
+new StructuredDataTool();
 
 endif;
