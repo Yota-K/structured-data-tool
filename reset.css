@@ -1,0 +1,9 @@
+/* 以下のスタイルはホーム画面（structured-data-tool）でのみ読み込ませる
+ * テーマが読み込んでいるスタイルが原因で表示崩れが発生することがある
+ *
+ * 表示崩れが発生した際はここに追記していく
+ * */
+pre {
+  background: initial !important;
+  border: none !important;
+}
