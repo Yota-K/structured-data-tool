@@ -57,11 +57,17 @@ add_action('save_post', 'save_custom_fields');
 // 構造化データをフッターに出力する
 function insert_structured_data()
 {
-  global $post;
+  global $post, $wpdb;
+
+  // 表示されている投稿タイプがチェック済みかどうかを取得
+  $post_type = get_post_type($post->ID);
+  $table_name = $wpdb->prefix . StructuredDataTool::TABLE_NAME;
+  $query = "SELECT * FROM $table_name WHERE post_type = %s";
+  $find_data = $wpdb->get_row($wpdb->prepare($query, $post_type));
 
   $meta_value = get_post_meta($post->ID, meta_key($post->ID), true);
 
-  if ($meta_value) {
+  if ($meta_value && $find_data->value === StructuredDataTool::CHECKED_VALUE) {
     printf('<script type="application/ld+json">%s</script>', $meta_value);
   }
 }
