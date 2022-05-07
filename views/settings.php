@@ -90,7 +90,8 @@ function remove_post_type()
   }
 }
 
-if (isset($_POST['save_setting']) && isset($_POST['values'])) {
+
+if (isset($_POST['save_setting'])) {
   save_setting($post_types);
 } else if (isset($_POST['add_new_post_type'])) {
   add_new_post_type();
