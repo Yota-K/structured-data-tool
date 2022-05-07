@@ -85,6 +85,9 @@ const EditFaqstructuredData = () => {
               value={faqData.question}
               sx={{
                 '& .MuiInputBase-input': {
+                  /* WPの管理画面のスタイルとバッティングして表示崩れが発生してした */
+                  /* ゆくゆくはMUIのテーマとかで設定した方が良さそう */
+                  border: '0px !important',
                   padding: '16.5px 14px !important',
                 },
               }}
