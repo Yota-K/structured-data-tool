@@ -48,7 +48,11 @@ const EditFaqstructuredData = () => {
           name: faqData.question.trim(),
           acceptedAnswer: {
             '@type': 'Answer',
-            text: faqData.answer.trim(),
+            // 改行コードは削除する
+            // TODO: 本当は以下のような感じにしたい
+            // 追加したFAQ: 改行コード削除しない
+            // 構造化データのプレビュー: 改行コード削除
+            text: faqData.answer.trim().replace(/\r?\n/g, ''),
           },
         },
       ],
@@ -124,7 +128,7 @@ const EditFaqstructuredData = () => {
           ))}
         </Grid>
         <Grid item xs={8}>
-          <ViewStructuredData json={structuredData} />
+          <ViewStructuredData jsonString={structuredData} />
         </Grid>
       </Grid>
     </>

@@ -10,14 +10,14 @@ import Alert from '~/components/common/Alert';
 import { FaqPageStructuredData } from '~/types/structuredData';
 
 type Props = {
-  json: FaqPageStructuredData;
+  jsonString: FaqPageStructuredData;
 };
 
-const ViewStructuredData: React.FC<Props> = ({ json }) => {
+const ViewStructuredData: React.FC<Props> = ({ jsonString }) => {
   const [open, setOpen] = useState(false);
 
   const structuredDataCopy = () => {
-    copyToClipBoard(JSON.stringify(json, null, 2));
+    copyToClipBoard(JSON.stringify(jsonString, null, 2));
     setOpen(true);
   };
 
@@ -34,7 +34,7 @@ const ViewStructuredData: React.FC<Props> = ({ json }) => {
         </IconButton>
       </Tooltip>
       <CodeEditor
-        value={JSON.stringify(json, null, 2)}
+        value={JSON.stringify(jsonString, null, 2)}
         language="json"
         padding={15}
         style={{
