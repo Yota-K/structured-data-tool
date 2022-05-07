@@ -14,7 +14,8 @@ class StructuredDataTool
     if (is_admin()) {
       add_action('admin_menu', [$this, 'admin_menu']);
       add_action('admin_menu', [$this, 'sub_menu']);
-      add_action('admin_enqueue_scripts', [$this, 'include_home_resources']);
+      // 優先度を下げて可能な限り後ろの方で読み込む
+      add_action('admin_enqueue_scripts', [$this, 'include_home_resources'], 99999);
     }
   }
 
@@ -68,6 +69,7 @@ class StructuredDataTool
 
     // プラグインのホーム画面でのみCSS・JSを読み込ませる
     if (preg_match('/admin\.php\?page=structured-data-tool$/u', $current_page_url)) {
+      wp_enqueue_style('structured-data-tool-reset-css', $plugin_url . 'reset.css', [], wp_rand());
       wp_enqueue_style('structured-data-tool-css', $plugin_url . 'package/dist/assets/index.css', [], wp_rand());
       wp_enqueue_script('structured-data-tool-js', $plugin_url . 'package/dist/assets/index.js', ['jquery', 'wp-element'], wp_rand(), true);
     }
