@@ -27,14 +27,14 @@ const EditFaqstructuredData = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFaqData({
       ...faqData,
-      question: e.target.value.trim(),
+      question: e.target.value,
     });
   };
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFaqData({
       ...faqData,
-      answer: e.target.value.trim(),
+      answer: e.target.value,
     });
   };
 
@@ -45,10 +45,10 @@ const EditFaqstructuredData = () => {
         ...structuredData.mainEntity,
         {
           '@type': 'Question',
-          name: faqData.question,
+          name: faqData.question.trim(),
           acceptedAnswer: {
             '@type': 'Answer',
-            text: faqData.answer,
+            text: faqData.answer.trim(),
           },
         },
       ],
@@ -83,6 +83,11 @@ const EditFaqstructuredData = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
               fullWidth
               value={faqData.question}
+              sx={{
+                '& .MuiInputBase-input': {
+                  padding: '16.5px 14px !important',
+                },
+              }}
             />
           </div>
           <div>
