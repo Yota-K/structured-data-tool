@@ -28,7 +28,7 @@ const ViewStructuredData: React.FC<Props> = ({ jsonString }) => {
 
   return (
     <Box sx={{ position: 'relative' }}>
-      <Tooltip title="コピー" placement="top" sx={{ position: 'absolute', top: 0, right: 0, zIndex: 100000 }}>
+      <Tooltip title="コピー" placement="top" sx={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }}>
         <IconButton onClick={structuredDataCopy}>
           <CopyAllIcon sx={{ color: 'white' }} />
         </IconButton>

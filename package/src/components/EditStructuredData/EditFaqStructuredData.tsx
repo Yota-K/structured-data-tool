@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import AppModal from '~/components/common/AppModal';
+import Editor from '~/components/common/Editor';
 import ViewStructuredData from '~/components/common/ViewStructuredData';
 import FaqItem from '~/components/EditStructuredData/FaqItem';
-import Editor from '~/components/common/Editor';
 import { defaultfaqPageStructuredData } from '~/config/defaultStructuredData';
 import { FaqPageStructuredData } from '~/types/structuredData';
 
@@ -75,50 +75,27 @@ const EditFaqstructuredData = () => {
 
   const resetStructuredData = () => setStructuredData(defaultfaqPageStructuredData);
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <>
       <h2>FAQ Page</h2>
-      <Editor />
       <Grid container spacing={2} columns={16}>
         <Grid item xs={8}>
           <div>
-            <TextField
-              label="質問"
-              variant="outlined"
-              margin="normal"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
-              fullWidth
-              value={faqData.question}
-              sx={{
-                '& .MuiInputBase-input': {
-                  /* WPの管理画面のスタイルとバッティングして表示崩れが発生してした */
-                  /* ゆくゆくはMUIのテーマとかで設定した方が良さそう */
-                  border: '0px !important',
-                  padding: '16.5px 14px !important',
-                },
-              }}
-            />
+            <Button variant="contained" onClick={handleOpen}>
+              質問を入力する
+            </Button>
+            <Button sx={{ m: 2 }} variant="contained">
+              答えを入力する
+            </Button>
           </div>
-          <div>
-            <TextField
-              label="答え"
-              variant="outlined"
-              margin="normal"
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleTextareaChange(e)}
-              fullWidth
-              multiline
-              minRows={5}
-              value={faqData.answer}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  background: '#fff',
-                },
-                '& .MuiInputBase-inputMultiline': {
-                  boxShadow: 'none',
-                },
-              }}
-            />
-          </div>
+          <AppModal open={open} onClose={handleClose}>
+            <Editor />
+          </AppModal>
+
           <Button variant="contained" onClick={addQuestionAndAnswer} disabled={isDisabled}>
             質問を増やす
           </Button>
