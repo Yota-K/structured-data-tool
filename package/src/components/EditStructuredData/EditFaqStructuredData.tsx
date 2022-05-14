@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import ViewStructuredData from '~/components/common/ViewStructuredData';
 import FaqItem from '~/components/EditStructuredData/FaqItem';
+import Editor from '~/components/common/Editor';
 import { defaultfaqPageStructuredData } from '~/config/defaultStructuredData';
 import { FaqPageStructuredData } from '~/types/structuredData';
 
@@ -77,6 +78,7 @@ const EditFaqstructuredData = () => {
   return (
     <>
       <h2>FAQ Page</h2>
+      <Editor />
       <Grid container spacing={2} columns={16}>
         <Grid item xs={8}>
           <div>
