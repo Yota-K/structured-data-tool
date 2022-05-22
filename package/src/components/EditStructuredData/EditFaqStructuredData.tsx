@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Grid, Group, Textarea, TextInput, Title } from '@mantine/core';
+import { Button, Grid, Group, ScrollArea, Textarea, TextInput, Title } from '@mantine/core';
 import ViewStructuredData from '~/components/common/ViewStructuredData';
 import FaqItem from '~/components/EditStructuredData/FaqItem';
 import { defaultfaqPageStructuredData } from '~/config/defaultStructuredData';
@@ -98,9 +98,11 @@ const EditFaqstructuredData = () => {
             </Button>
             <Button onClick={resetStructuredData}>リセット</Button>
           </Group>
-          {structuredData.mainEntity.map((faq, i) => (
-            <FaqItem key={i} faq={faq} index={i} removeQuestionAndAnswer={removeQuestionAndAnswer} />
-          ))}
+          <ScrollArea style={{ height: 300 }}>
+            {structuredData.mainEntity.map((faq, i) => (
+              <FaqItem key={i} faq={faq} index={i} removeQuestionAndAnswer={removeQuestionAndAnswer} />
+            ))}
+          </ScrollArea>
         </Grid.Col>
         <Grid.Col md={1} lg={2}>
           <ViewStructuredData jsonString={structuredData} />
