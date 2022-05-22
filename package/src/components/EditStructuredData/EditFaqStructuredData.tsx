@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import { Button } from '@mantine/core';
 import Grid from '@mui/material/Grid';
 import ViewStructuredData from '~/components/common/ViewStructuredData';
 import FaqItem from '~/components/EditStructuredData/FaqItem';
@@ -117,12 +117,10 @@ const EditFaqstructuredData = () => {
               }}
             />
           </div>
-          <Button variant="contained" onClick={addQuestionAndAnswer} disabled={isDisabled}>
+          <Button onClick={addQuestionAndAnswer} disabled={isDisabled}>
             質問を増やす
           </Button>
-          <Button sx={{ m: 2 }} variant="contained" onClick={resetStructuredData}>
-            リセット
-          </Button>
+          <Button onClick={resetStructuredData}>リセット</Button>
           {structuredData.mainEntity.map((faq, i) => (
             <FaqItem key={i} faq={faq} index={i} removeQuestionAndAnswer={removeQuestionAndAnswer} />
           ))}
