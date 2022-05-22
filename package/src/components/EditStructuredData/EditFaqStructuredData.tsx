@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { TextInput } from '@mantine/core';
 import { Textarea } from '@mantine/core';
 import { Button } from '@mantine/core';
-import Grid from '@mui/material/Grid';
+import { Grid } from '@mantine/core';
+
 import ViewStructuredData from '~/components/common/ViewStructuredData';
 import FaqItem from '~/components/EditStructuredData/FaqItem';
 import { defaultfaqPageStructuredData } from '~/config/defaultStructuredData';
@@ -78,8 +79,8 @@ const EditFaqstructuredData = () => {
   return (
     <>
       <h2>FAQ Page</h2>
-      <Grid container spacing={2} columns={16}>
-        <Grid item xs={8}>
+      <Grid grow>
+        <Grid.Col md={1} lg={2}>
           <div>
             <TextInput
               label="質問"
@@ -102,10 +103,10 @@ const EditFaqstructuredData = () => {
           {structuredData.mainEntity.map((faq, i) => (
             <FaqItem key={i} faq={faq} index={i} removeQuestionAndAnswer={removeQuestionAndAnswer} />
           ))}
-        </Grid>
-        <Grid item xs={8}>
+        </Grid.Col>
+        <Grid.Col md={1} lg={2}>
           <ViewStructuredData jsonString={structuredData} />
-        </Grid>
+        </Grid.Col>
       </Grid>
     </>
   );
