@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput } from '@mantine/core';
-import { Textarea } from '@mantine/core';
-import { Button } from '@mantine/core';
-import { Grid } from '@mantine/core';
-
+import { Button, Grid, Group, Textarea, TextInput, Title } from '@mantine/core';
 import ViewStructuredData from '~/components/common/ViewStructuredData';
 import FaqItem from '~/components/EditStructuredData/FaqItem';
 import { defaultfaqPageStructuredData } from '~/config/defaultStructuredData';
@@ -78,7 +74,7 @@ const EditFaqstructuredData = () => {
 
   return (
     <>
-      <h2>FAQ Page</h2>
+      <Title order={2}>FAQ Page</Title>
       <Grid grow>
         <Grid.Col md={1} lg={2}>
           <div>
@@ -96,10 +92,12 @@ const EditFaqstructuredData = () => {
               value={faqData.answer}
             />
           </div>
-          <Button onClick={addQuestionAndAnswer} disabled={isDisabled}>
-            質問を増やす
-          </Button>
-          <Button onClick={resetStructuredData}>リセット</Button>
+          <Group style={{ marginTop: '20px' }}>
+            <Button onClick={addQuestionAndAnswer} disabled={isDisabled}>
+              質問を増やす
+            </Button>
+            <Button onClick={resetStructuredData}>リセット</Button>
+          </Group>
           {structuredData.mainEntity.map((faq, i) => (
             <FaqItem key={i} faq={faq} index={i} removeQuestionAndAnswer={removeQuestionAndAnswer} />
           ))}
