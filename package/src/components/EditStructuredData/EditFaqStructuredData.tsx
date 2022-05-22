@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
+import { TextInput } from '@mantine/core';
+import { Textarea } from '@mantine/core';
 import { Button } from '@mantine/core';
 import Grid from '@mui/material/Grid';
 import ViewStructuredData from '~/components/common/ViewStructuredData';
@@ -80,41 +81,18 @@ const EditFaqstructuredData = () => {
       <Grid container spacing={2} columns={16}>
         <Grid item xs={8}>
           <div>
-            <TextField
+            <TextInput
               label="質問"
-              variant="outlined"
-              margin="normal"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
-              fullWidth
               value={faqData.question}
-              sx={{
-                '& .MuiInputBase-input': {
-                  /* WPの管理画面のスタイルとバッティングして表示崩れが発生してした */
-                  /* ゆくゆくはMUIのテーマとかで設定した方が良さそう */
-                  border: '0px !important',
-                  padding: '16.5px 14px !important',
-                },
-              }}
             />
           </div>
           <div>
-            <TextField
+            <Textarea
               label="答え"
-              variant="outlined"
-              margin="normal"
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleTextareaChange(e)}
-              fullWidth
-              multiline
               minRows={5}
               value={faqData.answer}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  background: '#fff',
-                },
-                '& .MuiInputBase-inputMultiline': {
-                  boxShadow: 'none',
-                },
-              }}
             />
           </div>
           <Button onClick={addQuestionAndAnswer} disabled={isDisabled}>
