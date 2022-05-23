@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import CodeEditor from '@uiw/react-textarea-code-editor';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
+import { ActionIcon, Box, Tooltip } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
 import CopyAllIcon from '@mui/icons-material/CopyAll';
-import Tooltip from '@mui/material/Tooltip';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { copyToClipBoard } from '~/utils/copyToClipBoard';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '~/components/common/Alert';
 import { FaqPageStructuredData } from '~/types/structuredData';
 
 type Props = {
@@ -14,24 +12,30 @@ type Props = {
 };
 
 const ViewStructuredData: React.FC<Props> = ({ jsonString }) => {
-  const [open, setOpen] = useState(false);
-
   const structuredDataCopy = () => {
     copyToClipBoard(JSON.stringify(jsonString, null, 2));
-    setOpen(true);
-  };
 
-  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') return;
-    setOpen(false);
+    showNotification({
+      title: 'クリップボードにコピーしました！',
+      message: '',
+      color: 'teal',
+      icon: <CheckCircleOutlineIcon />,
+    });
   };
 
   return (
     <Box sx={{ position: 'relative' }}>
-      <Tooltip title="コピー" placement="top" sx={{ position: 'absolute', top: 0, right: 0, zIndex: 100000 }}>
-        <IconButton onClick={structuredDataCopy}>
-          <CopyAllIcon sx={{ color: 'white' }} />
-        </IconButton>
+      <Tooltip label="コピー" withArrow sx={{ position: 'absolute', top: '4px', right: '4px', zIndex: 100000 }}>
+        <ActionIcon
+          color="indigo"
+          size="lg"
+          radius="xl"
+          variant="transparent"
+          style={{ color: '#fff' }}
+          onClick={structuredDataCopy}
+        >
+          <CopyAllIcon />
+        </ActionIcon>
       </Tooltip>
       <CodeEditor
         value={JSON.stringify(jsonString, null, 2)}
@@ -44,16 +48,6 @@ const ViewStructuredData: React.FC<Props> = ({ jsonString }) => {
           borderRadius: '4px',
         }}
       />
-      <Snackbar
-        open={open}
-        onClose={handleClose}
-        autoHideDuration={2000}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        <Alert severity="success" sx={{ width: '100%' }}>
-          コピーしました
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };
