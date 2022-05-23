@@ -5,7 +5,7 @@ import EditArea from '~/components/EditStructuredData/EditArea';
 function App() {
   return (
     <NotificationsProvider>
-      <Container sx={{ mt: 2 }}>
+      <Container style={{ marginTop: '20px' }}>
         <Anchor href="https://search.google.com/test/rich-results" target="_blank" rel="noopener">
           構造化データのテストを行う
         </Anchor>

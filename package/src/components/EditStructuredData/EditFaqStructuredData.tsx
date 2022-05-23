@@ -5,7 +5,7 @@ import FaqItem from '~/components/EditStructuredData/FaqItem';
 import { defaultfaqPageStructuredData } from '~/config/defaultStructuredData';
 import { FaqPageStructuredData } from '~/types/structuredData';
 
-const EditFaqstructuredData = () => {
+const EditFaqstructuredData: React.FC = () => {
   const [structuredData, setStructuredData] = useState<FaqPageStructuredData>(defaultfaqPageStructuredData);
   const [faqData, setFaqData] = useState({
     question: '',
@@ -92,17 +92,19 @@ const EditFaqstructuredData = () => {
               value={faqData.answer}
             />
           </div>
-          <Group style={{ marginTop: '20px' }}>
+          <Group style={{ margin: '20px 0' }}>
             <Button onClick={addQuestionAndAnswer} disabled={isDisabled}>
               質問を増やす
             </Button>
             <Button onClick={resetStructuredData}>リセット</Button>
           </Group>
-          <ScrollArea style={{ height: 300 }}>
-            {structuredData.mainEntity.map((faq, i) => (
-              <FaqItem key={i} faq={faq} index={i} removeQuestionAndAnswer={removeQuestionAndAnswer} />
-            ))}
-          </ScrollArea>
+          {structuredData.mainEntity.length !== 0 && (
+            <ScrollArea style={{ height: 250 }}>
+              {structuredData.mainEntity.map((faq, i) => (
+                <FaqItem key={i} faq={faq} index={i} removeQuestionAndAnswer={removeQuestionAndAnswer} />
+              ))}
+            </ScrollArea>
+          )}
         </Grid.Col>
         <Grid.Col md={1} lg={2}>
           <ViewStructuredData jsonString={structuredData} />

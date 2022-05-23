@@ -15,7 +15,7 @@ const FaqItem: React.FC<Props> = ({ faq, index, removeQuestionAndAnswer }) => {
     <Paper shadow="xs" p="sm" style={{ margin: '20px 0', position: 'relative' }}>
       <CloseButton
         onClick={() => removeQuestionAndAnswer(index)}
-        style={{ position: 'absolute', top: '6px', right: '6px' }}
+        style={{ position: 'absolute', top: '4px', right: '10px' }}
         color="red"
         radius="xl"
         aria-label="FAQを削除する"

@@ -2,8 +2,7 @@ import React from 'react';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { ActionIcon, Box, Tooltip } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import CopyAllIcon from '@mui/icons-material/CopyAll';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { CircleCheck, Copy } from 'tabler-icons-react';
 import { copyToClipBoard } from '~/utils/copyToClipBoard';
 import { FaqPageStructuredData } from '~/types/structuredData';
 
@@ -19,7 +18,7 @@ const ViewStructuredData: React.FC<Props> = ({ jsonString }) => {
       title: 'クリップボードにコピーしました！',
       message: '',
       color: 'teal',
-      icon: <CheckCircleOutlineIcon />,
+      icon: <CircleCheck />,
     });
   };
 
@@ -34,7 +33,7 @@ const ViewStructuredData: React.FC<Props> = ({ jsonString }) => {
           style={{ color: '#fff' }}
           onClick={structuredDataCopy}
         >
-          <CopyAllIcon />
+          <Copy />
         </ActionIcon>
       </Tooltip>
       <CodeEditor
