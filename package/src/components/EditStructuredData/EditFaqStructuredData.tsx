@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import { Button, Grid, Group, ScrollArea, Textarea, TextInput, Title } from '@mantine/core';
 import ViewStructuredData from '~/components/common/ViewStructuredData';
 import FaqItem from '~/components/EditStructuredData/FaqItem';
 import { defaultfaqPageStructuredData } from '~/config/defaultStructuredData';
 import { FaqPageStructuredData } from '~/types/structuredData';
 
-const EditFaqstructuredData = () => {
+const EditFaqstructuredData: React.FC = () => {
   const [structuredData, setStructuredData] = useState<FaqPageStructuredData>(defaultfaqPageStructuredData);
   const [faqData, setFaqData] = useState({
     question: '',
@@ -76,60 +74,41 @@ const EditFaqstructuredData = () => {
 
   return (
     <>
-      <h2>FAQ Page</h2>
-      <Grid container spacing={2} columns={16}>
-        <Grid item xs={8}>
+      <Title order={2}>FAQ Page</Title>
+      <Grid grow>
+        <Grid.Col md={1} lg={2}>
           <div>
-            <TextField
+            <TextInput
               label="質問"
-              variant="outlined"
-              margin="normal"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
-              fullWidth
               value={faqData.question}
-              sx={{
-                '& .MuiInputBase-input': {
-                  /* WPの管理画面のスタイルとバッティングして表示崩れが発生してした */
-                  /* ゆくゆくはMUIのテーマとかで設定した方が良さそう */
-                  border: '0px !important',
-                  padding: '16.5px 14px !important',
-                },
-              }}
             />
           </div>
           <div>
-            <TextField
+            <Textarea
               label="答え"
-              variant="outlined"
-              margin="normal"
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleTextareaChange(e)}
-              fullWidth
-              multiline
               minRows={5}
               value={faqData.answer}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  background: '#fff',
-                },
-                '& .MuiInputBase-inputMultiline': {
-                  boxShadow: 'none',
-                },
-              }}
             />
           </div>
-          <Button variant="contained" onClick={addQuestionAndAnswer} disabled={isDisabled}>
-            質問を増やす
-          </Button>
-          <Button sx={{ m: 2 }} variant="contained" onClick={resetStructuredData}>
-            リセット
-          </Button>
-          {structuredData.mainEntity.map((faq, i) => (
-            <FaqItem key={i} faq={faq} index={i} removeQuestionAndAnswer={removeQuestionAndAnswer} />
-          ))}
-        </Grid>
-        <Grid item xs={8}>
+          <Group style={{ margin: '20px 0' }}>
+            <Button onClick={addQuestionAndAnswer} disabled={isDisabled}>
+              質問を増やす
+            </Button>
+            <Button onClick={resetStructuredData}>リセット</Button>
+          </Group>
+          {structuredData.mainEntity.length !== 0 && (
+            <ScrollArea style={{ height: 250 }}>
+              {structuredData.mainEntity.map((faq, i) => (
+                <FaqItem key={i} faq={faq} index={i} removeQuestionAndAnswer={removeQuestionAndAnswer} />
+              ))}
+            </ScrollArea>
+          )}
+        </Grid.Col>
+        <Grid.Col md={1} lg={2}>
           <ViewStructuredData jsonString={structuredData} />
-        </Grid>
+        </Grid.Col>
       </Grid>
     </>
   );
