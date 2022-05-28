@@ -8,8 +8,6 @@ type Props = {
   removeQuestionAndAnswer: (index: number) => void;
 };
 
-// TODO: Answerは改行込みのデータを表示させる
-// 参考: https://qiita.com/ossan-engineer/items/bdb45368ab453af38342
 const FaqItem: React.FC<Props> = ({ faq, index, removeQuestionAndAnswer }) => {
   return (
     <Paper shadow="xs" p="sm" style={{ margin: '20px 0', position: 'relative' }}>
@@ -23,7 +21,7 @@ const FaqItem: React.FC<Props> = ({ faq, index, removeQuestionAndAnswer }) => {
       <Title order={3}>Question</Title>
       <Text>{faq.name}</Text>
       <Title order={3}>Answer</Title>
-      <Text>{faq.acceptedAnswer.text}</Text>
+      <Text dangerouslySetInnerHTML={{ __html: faq.acceptedAnswer.text }} />
     </Paper>
   );
 };
