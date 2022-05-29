@@ -1,61 +1,57 @@
-import React, { useState } from 'react';
+import React from 'react';
 import CodeEditor from '@uiw/react-textarea-code-editor';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import CopyAllIcon from '@mui/icons-material/CopyAll';
-import Tooltip from '@mui/material/Tooltip';
+import { ActionIcon, Box, Tooltip, ScrollArea } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
+import { CircleCheck, Copy } from 'tabler-icons-react';
 import { copyToClipBoard } from '~/utils/copyToClipBoard';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '~/components/common/Alert';
 import { FaqPageStructuredData } from '~/types/structuredData';
 
 type Props = {
-  jsonString: FaqPageStructuredData;
+  structuredData: FaqPageStructuredData;
 };
 
-const ViewStructuredData: React.FC<Props> = ({ jsonString }) => {
-  const [open, setOpen] = useState(false);
-
+const ViewStructuredData = React.memo<Props>(({ structuredData }) => {
   const structuredDataCopy = () => {
-    copyToClipBoard(JSON.stringify(jsonString, null, 2));
-    setOpen(true);
-  };
+    copyToClipBoard(JSON.stringify(structuredData, null, 2));
 
-  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') return;
-    setOpen(false);
+    showNotification({
+      title: 'クリップボードにコピーしました！',
+      message: '',
+      color: 'teal',
+      icon: <CircleCheck />,
+    });
   };
 
   return (
     <Box sx={{ position: 'relative' }}>
-      <Tooltip title="コピー" placement="top" sx={{ position: 'absolute', top: 0, right: 0, zIndex: 100000 }}>
-        <IconButton onClick={structuredDataCopy}>
-          <CopyAllIcon sx={{ color: 'white' }} />
-        </IconButton>
+      <Tooltip label="コピー" withArrow sx={{ position: 'absolute', top: '4px', right: '4px', zIndex: 100000 }}>
+        <ActionIcon
+          color="indigo"
+          size="lg"
+          radius="xl"
+          variant="transparent"
+          style={{ color: '#fff' }}
+          onClick={structuredDataCopy}
+        >
+          <Copy />
+        </ActionIcon>
       </Tooltip>
-      <CodeEditor
-        value={JSON.stringify(jsonString, null, 2)}
-        language="json"
-        padding={15}
-        style={{
-          fontSize: 14,
-          backgroundColor: '#323639',
-          fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-          borderRadius: '4px',
-        }}
-      />
-      <Snackbar
-        open={open}
-        onClose={handleClose}
-        autoHideDuration={2000}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        <Alert severity="success" sx={{ width: '100%' }}>
-          コピーしました
-        </Alert>
-      </Snackbar>
+      <ScrollArea style={{ height: 250 }}>
+        <CodeEditor
+          readOnly
+          value={JSON.stringify(structuredData, null, 2)}
+          language="json"
+          padding={15}
+          style={{
+            fontSize: 14,
+            backgroundColor: '#323639',
+            fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+            borderRadius: '4px',
+          }}
+        />
+      </ScrollArea>
     </Box>
   );
-};
+});
 
 export default ViewStructuredData;

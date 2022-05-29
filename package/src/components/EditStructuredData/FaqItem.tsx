@@ -1,9 +1,6 @@
 import React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import { CloseButton, Paper, Text } from '@mantine/core';
+import Heading from '~/components/common/Heading';
 import { FaqPageStructuredData } from '~/types/structuredData';
 
 type Props = {
@@ -12,31 +9,21 @@ type Props = {
   removeQuestionAndAnswer: (index: number) => void;
 };
 
-// TODO: もうちょっとMUIを生かした作りにしたい
 const FaqItem: React.FC<Props> = ({ faq, index, removeQuestionAndAnswer }) => {
-  // Answerは改行込みのデータを表示させる
-  // 参考: https://qiita.com/ossan-engineer/items/bdb45368ab453af38342
-  const style: React.CSSProperties = { whiteSpace: 'pre-line' };
-
   return (
-    <Card sx={{ minWidth: 275, my: 2 }}>
-      <CardContent sx={{ position: 'relative' }}>
-        <IconButton
-          onClick={() => removeQuestionAndAnswer(index)}
-          sx={{ position: 'absolute', top: '6px', right: '6px' }}
-        >
-          <CloseIcon color="error" />
-        </IconButton>
-        <Typography color="text.secondary" gutterBottom>
-          <h3 style={{ fontWeight: 'bold', margin: 0 }}>Question</h3>
-          <p style={{ margin: 0 }}>{faq.name}</p>
-        </Typography>
-        <Typography color="text.secondary" gutterBottom>
-          <h3 style={{ fontWeight: 'bold', margin: 0 }}>Answer</h3>
-          <p style={{ ...style, ...{ margin: 0 } }}>{faq.acceptedAnswer.text}</p>
-        </Typography>
-      </CardContent>
-    </Card>
+    <Paper shadow="xs" p="sm" style={{ margin: '20px 0', position: 'relative' }}>
+      <CloseButton
+        onClick={() => removeQuestionAndAnswer(index)}
+        style={{ position: 'absolute', top: '8px', right: '18px' }}
+        color="red"
+        radius="xl"
+        aria-label="FAQを削除する"
+      />
+      <Heading order={3}>Question</Heading>
+      <Text>{faq.name}</Text>
+      <Heading order={3}>Answer</Heading>
+      <Text dangerouslySetInnerHTML={{ __html: faq.acceptedAnswer.text }} />
+    </Paper>
   );
 };
 

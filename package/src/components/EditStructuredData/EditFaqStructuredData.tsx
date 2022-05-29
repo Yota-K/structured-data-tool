@@ -1,135 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import React from 'react';
+import { Button, Grid, Group, ScrollArea, TextInput } from '@mantine/core';
+import { RichTextEditor } from '@mantine/rte';
+import Heading from '~/components/common/Heading';
 import ViewStructuredData from '~/components/common/ViewStructuredData';
 import FaqItem from '~/components/EditStructuredData/FaqItem';
 import { defaultfaqPageStructuredData } from '~/config/defaultStructuredData';
-import { FaqPageStructuredData } from '~/types/structuredData';
+import { useFaq } from '~/hooks/useFaq';
 
-const EditFaqstructuredData = () => {
-  const [structuredData, setStructuredData] = useState<FaqPageStructuredData>(defaultfaqPageStructuredData);
-  const [faqData, setFaqData] = useState({
-    question: '',
-    answer: '',
-  });
-  const [isDisabled, setIsDisabed] = useState(true);
-
-  useEffect(() => {
-    if ([faqData.question, faqData.answer].every((value) => value !== '')) {
-      setIsDisabed(false);
-      return;
-    }
-
-    setIsDisabed(true);
-  }, [faqData]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFaqData({
-      ...faqData,
-      question: e.target.value,
-    });
-  };
-
-  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFaqData({
-      ...faqData,
-      answer: e.target.value,
-    });
-  };
-
-  const addQuestionAndAnswer = () => {
-    setStructuredData({
-      ...structuredData,
-      mainEntity: [
-        ...structuredData.mainEntity,
-        {
-          '@type': 'Question',
-          name: faqData.question.trim(),
-          acceptedAnswer: {
-            '@type': 'Answer',
-            // 改行コードは削除する
-            // TODO: 本当は以下のような感じにしたい
-            // 追加したFAQ: 改行コード削除しない
-            // 構造化データのプレビュー: 改行コード削除
-            text: faqData.answer.trim().replace(/\r?\n/g, ''),
-          },
-        },
-      ],
-    });
-
-    setFaqData({
-      question: '',
-      answer: '',
-    });
-  };
-
-  const removeQuestionAndAnswer = (index: number) => {
-    const newStructuredData = [...structuredData.mainEntity].filter((_faq, faqIndex) => faqIndex !== index);
-    setStructuredData({
-      ...structuredData,
-      mainEntity: newStructuredData,
-    });
-  };
-
-  const resetStructuredData = () => setStructuredData(defaultfaqPageStructuredData);
+const EditFaqstructuredData: React.FC = () => {
+  const {
+    structuredData,
+    setStructuredData,
+    faqData,
+    isDisabled,
+    editorRef,
+    handleInputChange,
+    handleEditorChange,
+    addFaq,
+    removeFaq,
+    newStructuredData,
+  } = useFaq();
 
   return (
     <>
-      <h2>FAQ Page</h2>
-      <Grid container spacing={2} columns={16}>
-        <Grid item xs={8}>
+      <Heading order={2}>FAQの構造化データを入力してください</Heading>
+      <Grid grow>
+        <Grid.Col md={1} lg={2}>
           <div>
-            <TextField
-              label="質問"
-              variant="outlined"
-              margin="normal"
+            <Heading order={3}>質問</Heading>
+            <TextInput
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
-              fullWidth
               value={faqData.question}
-              sx={{
-                '& .MuiInputBase-input': {
-                  /* WPの管理画面のスタイルとバッティングして表示崩れが発生してした */
-                  /* ゆくゆくはMUIのテーマとかで設定した方が良さそう */
-                  border: '0px !important',
-                  padding: '16.5px 14px !important',
-                },
-              }}
             />
           </div>
           <div>
-            <TextField
-              label="答え"
-              variant="outlined"
-              margin="normal"
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleTextareaChange(e)}
-              fullWidth
-              multiline
-              minRows={5}
+            <Heading order={3}>答え</Heading>
+            <RichTextEditor
+              controls={[
+                ['bold', 'link', 'underline', 'italic'],
+                ['unorderedList', 'orderedList'],
+                ['h1', 'h2', 'h3'],
+              ]}
+              ref={editorRef}
               value={faqData.answer}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  background: '#fff',
-                },
-                '& .MuiInputBase-inputMultiline': {
-                  boxShadow: 'none',
-                },
-              }}
+              onChange={(value) => handleEditorChange(value)}
             />
           </div>
-          <Button variant="contained" onClick={addQuestionAndAnswer} disabled={isDisabled}>
-            質問を増やす
-          </Button>
-          <Button sx={{ m: 2 }} variant="contained" onClick={resetStructuredData}>
-            リセット
-          </Button>
-          {structuredData.mainEntity.map((faq, i) => (
-            <FaqItem key={i} faq={faq} index={i} removeQuestionAndAnswer={removeQuestionAndAnswer} />
-          ))}
-        </Grid>
-        <Grid item xs={8}>
-          <ViewStructuredData jsonString={structuredData} />
-        </Grid>
+          <Group style={{ margin: '20px 0' }}>
+            <Button onClick={addFaq} disabled={isDisabled}>
+              質問を増やす
+            </Button>
+            <Button onClick={() => setStructuredData(defaultfaqPageStructuredData)}>リセット</Button>
+          </Group>
+          {structuredData.mainEntity.length !== 0 && (
+            <ScrollArea style={{ height: 250 }}>
+              {structuredData.mainEntity.map((faq, i) => (
+                <FaqItem key={i} faq={faq} index={i} removeQuestionAndAnswer={removeFaq} />
+              ))}
+            </ScrollArea>
+          )}
+        </Grid.Col>
+        <Grid.Col md={1} lg={2}>
+          <ViewStructuredData structuredData={newStructuredData} />
+        </Grid.Col>
       </Grid>
     </>
   );
