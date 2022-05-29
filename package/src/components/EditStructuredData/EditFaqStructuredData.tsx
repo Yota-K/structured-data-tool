@@ -25,22 +25,26 @@ const EditFaqstructuredData: React.FC = () => {
       <Title order={2}>FAQの構造化データを入力してください</Title>
       <Grid grow>
         <Grid.Col md={1} lg={2}>
-          <Title order={3}>質問</Title>
-          <TextInput
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
-            value={faqData.question}
-          />
-          <Title order={3}>答え</Title>
-          <RichTextEditor
-            controls={[
-              ['bold', 'link', 'underline', 'italic'],
-              ['unorderedList', 'orderedList'],
-              ['h1', 'h2', 'h3'],
-            ]}
-            ref={editorRef}
-            value={faqData.answer}
-            onChange={(value) => handleEditorChange(value)}
-          />
+          <div>
+            <Title order={3}>質問</Title>
+            <TextInput
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
+              value={faqData.question}
+            />
+          </div>
+          <div>
+            <Title order={3}>答え</Title>
+            <RichTextEditor
+              controls={[
+                ['bold', 'link', 'underline', 'italic'],
+                ['unorderedList', 'orderedList'],
+                ['h1', 'h2', 'h3'],
+              ]}
+              ref={editorRef}
+              value={faqData.answer}
+              onChange={(value) => handleEditorChange(value)}
+            />
+          </div>
           <Group style={{ margin: '20px 0' }}>
             <Button onClick={addFaq} disabled={isDisabled}>
               質問を増やす
