@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Grid, Group, ScrollArea, TextInput, Title } from '@mantine/core';
+import { Button, Grid, Group, ScrollArea, TextInput } from '@mantine/core';
 import { RichTextEditor } from '@mantine/rte';
+import Heading from '~/components/common/Heading';
 import ViewStructuredData from '~/components/common/ViewStructuredData';
 import FaqItem from '~/components/EditStructuredData/FaqItem';
 import { defaultfaqPageStructuredData } from '~/config/defaultStructuredData';
@@ -22,18 +23,18 @@ const EditFaqstructuredData: React.FC = () => {
 
   return (
     <>
-      <Title order={2}>FAQの構造化データを入力してください</Title>
+      <Heading order={2}>FAQの構造化データを入力してください</Heading>
       <Grid grow>
         <Grid.Col md={1} lg={2}>
           <div>
-            <Title order={3}>質問</Title>
+            <Heading order={3}>質問</Heading>
             <TextInput
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
               value={faqData.question}
             />
           </div>
           <div>
-            <Title order={3}>答え</Title>
+            <Heading order={3}>答え</Heading>
             <RichTextEditor
               controls={[
                 ['bold', 'link', 'underline', 'italic'],

@@ -1,5 +1,6 @@
 import React from 'react';
-import { CloseButton, Paper, Text, Title } from '@mantine/core';
+import { CloseButton, Paper, Text } from '@mantine/core';
+import Heading from '~/components/common/Heading';
 import { FaqPageStructuredData } from '~/types/structuredData';
 
 type Props = {
@@ -18,9 +19,9 @@ const FaqItem: React.FC<Props> = ({ faq, index, removeQuestionAndAnswer }) => {
         radius="xl"
         aria-label="FAQを削除する"
       />
-      <Title order={3}>Question</Title>
+      <Heading order={3}>Question</Heading>
       <Text>{faq.name}</Text>
-      <Title order={3}>Answer</Title>
+      <Heading order={3}>Answer</Heading>
       <Text dangerouslySetInnerHTML={{ __html: faq.acceptedAnswer.text }} />
     </Paper>
   );
