@@ -7,12 +7,12 @@ import { copyToClipBoard } from '~/utils/copyToClipBoard';
 import { FaqPageStructuredData } from '~/types/structuredData';
 
 type Props = {
-  jsonString: FaqPageStructuredData;
+  structuredData: FaqPageStructuredData;
 };
 
-const ViewStructuredData: React.FC<Props> = ({ jsonString }) => {
+const ViewStructuredData = React.memo<Props>(({ structuredData }) => {
   const structuredDataCopy = () => {
-    copyToClipBoard(JSON.stringify(jsonString, null, 2));
+    copyToClipBoard(JSON.stringify(structuredData, null, 2));
 
     showNotification({
       title: 'クリップボードにコピーしました！',
@@ -37,7 +37,7 @@ const ViewStructuredData: React.FC<Props> = ({ jsonString }) => {
         </ActionIcon>
       </Tooltip>
       <CodeEditor
-        value={JSON.stringify(jsonString, null, 2)}
+        value={JSON.stringify(structuredData, null, 2)}
         language="json"
         padding={15}
         style={{
@@ -49,6 +49,6 @@ const ViewStructuredData: React.FC<Props> = ({ jsonString }) => {
       />
     </Box>
   );
-};
+});
 
 export default ViewStructuredData;
