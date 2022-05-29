@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ReactQuill from 'react-quill';
 import { Button, Grid, Group, ScrollArea, TextInput, Title } from '@mantine/core';
 import { RichTextEditor } from '@mantine/rte';
 import ViewStructuredData from '~/components/common/ViewStructuredData';
 import FaqItem from '~/components/EditStructuredData/FaqItem';
 import { defaultfaqPageStructuredData } from '~/config/defaultStructuredData';
 import { FaqPageStructuredData } from '~/types/structuredData';
-import ReactQuill from 'react-quill';
+import { escapeHtml } from '~/utils/escapeHtml';
 
 const EditFaqstructuredData: React.FC = () => {
   const [structuredData, setStructuredData] = useState<FaqPageStructuredData>(defaultfaqPageStructuredData);
@@ -83,6 +84,20 @@ const EditFaqstructuredData: React.FC = () => {
     });
   };
 
+  // FAQの構造化データの中の答えのHTMLのエスケープ化を行う
+  const escapeAnswerHtml = structuredData.mainEntity.map((entity) => {
+    return {
+      ...entity,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: escapeHtml(entity.acceptedAnswer.text),
+      },
+    };
+  });
+
+  // プレビューに表示する構造化データの答えのみ上書きする
+  const newStructuredData = { ...structuredData, mainEntity: escapeAnswerHtml } as FaqPageStructuredData;
+
   return (
     <>
       <Title order={2}>FAQの構造化データを入力してください</Title>
@@ -110,7 +125,7 @@ const EditFaqstructuredData: React.FC = () => {
           )}
         </Grid.Col>
         <Grid.Col md={1} lg={2}>
-          <ViewStructuredData jsonString={structuredData} />
+          <ViewStructuredData structuredData={newStructuredData} />
         </Grid.Col>
       </Grid>
     </>
