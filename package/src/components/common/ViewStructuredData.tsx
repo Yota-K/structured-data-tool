@@ -36,7 +36,7 @@ const ViewStructuredData = React.memo<Props>(({ structuredData }) => {
           <Copy />
         </ActionIcon>
       </Tooltip>
-      <ScrollArea style={{ height: 250 }}>
+      <ScrollArea style={{ height: 500 }}>
         <CodeEditor
           readOnly
           value={JSON.stringify(structuredData, null, 2)}
