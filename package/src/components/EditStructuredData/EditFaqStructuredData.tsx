@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Grid, Group, ScrollArea, TextInput } from '@mantine/core';
+import { Box, Button, Grid, Group, ScrollArea, TextInput } from '@mantine/core';
 import { RichTextEditor } from '@mantine/rte';
 import Heading from '~/components/common/Heading';
 import ViewStructuredData from '~/components/common/ViewStructuredData';
@@ -26,14 +26,14 @@ const EditFaqstructuredData: React.FC = () => {
       <Heading order={2}>FAQの構造化データを入力してください</Heading>
       <Grid grow>
         <Grid.Col md={1} lg={2}>
-          <div>
+          <Box sx={{ margin: '12px 0' }}>
             <Heading order={3}>質問</Heading>
             <TextInput
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
               value={faqData.question}
             />
-          </div>
-          <div>
+          </Box>
+          <Box sx={{ margin: '12px 0' }}>
             <Heading order={3}>答え</Heading>
             <RichTextEditor
               controls={[
@@ -45,7 +45,7 @@ const EditFaqstructuredData: React.FC = () => {
               value={faqData.answer}
               onChange={(value) => handleEditorChange(value)}
             />
-          </div>
+          </Box>
           <Group style={{ margin: '20px 0' }}>
             <Button onClick={addFaq} disabled={isDisabled}>
               質問を増やす
@@ -60,7 +60,7 @@ const EditFaqstructuredData: React.FC = () => {
             </ScrollArea>
           )}
         </Grid.Col>
-        <Grid.Col md={1} lg={2}>
+        <Grid.Col md={1} lg={2} style={{ width: '472px' }}>
           <ViewStructuredData structuredData={newStructuredData} />
         </Grid.Col>
       </Grid>
