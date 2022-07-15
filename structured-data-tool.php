@@ -33,7 +33,7 @@ class StructuredDataTool
     );
   }
 
-  // メインメニュー
+  // サブメニュー
   public function sub_menu()
   {
     add_submenu_page(
