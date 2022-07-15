@@ -29,7 +29,7 @@ class StructuredDataTool
       'structured-data-tool', /* ページを開いたときのurl */
       [$this, 'home_page'], /* メニューに紐づく画面を描画するcallback関数 */
       'dashicons-media-text', /* アイコン */
-      3, /* 表示位置の優先度 */
+      3 /* 表示位置の優先度 */
     );
   }
 
@@ -43,7 +43,7 @@ class StructuredDataTool
       'manage_options', /* 権限 */
       'settings', /* ページを開いたときのURL */
       [$this, 'settings_page'], /* メニューに紐づく画面を描画するcallback関数 */
-      'dashicons-media-text', /* アイコン */
+      'dashicons-media-text' /* アイコン */
     );
   }
 
